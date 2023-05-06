@@ -6,5 +6,3 @@ let percentual = Number(prompt('Insira o percentual do reajuste: '))
 let reajuste = salario * (1 + (percentual / 100))
 
 console.log("O valor do salario reajustado é de: " + reajuste)
-
-console.log("Adicionando para atividade de GIT")
