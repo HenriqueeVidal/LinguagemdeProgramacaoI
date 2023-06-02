@@ -28,7 +28,7 @@ class ContatoController {
     //---------------------------------------------------------------------------
     static async destroyContato(req, res) {
         const id = parseInt(req.params.id)
-        const contato = findByPk(id)
+        const contato = await Contato.findByPk(id)
         if (!contato) {
             res.status(404).json({ error: "Não encontrado" })
             return
