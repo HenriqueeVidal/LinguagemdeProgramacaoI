@@ -8,12 +8,14 @@ const titulo = document.getElementById('titulo')
 titulo.innerText = "H1 alterado pelo JS"*/
 
 function atualizarContatos() {
+
     const ul = document.getElementById('listaContatos')
     ul.innerHTML = ''
 
     const contatos = fetch('http://localhost:3000/contatos')
         .then(resposta => resposta.json())
         .then(contatosDados => {
+
             contatosDados.forEach(contato => {
                 const li = document.createElement('li')
                 li.innerText = `${contato.nome} - ${contato.email}`
@@ -43,30 +45,31 @@ function cadastrarContato(form) {
         email: form.target.email.value,
         telefone: form.target.telefone.value,
     }
-    console.log(nome, email, telefone)
+    console.log(contatoNovo)
     fetch('http://localhost:3000/contatos', {
         method: 'POST',
-        headers: { 'Content-type': 'aplication/json' },
+        headers: { 'Content-type': 'application/json' },
         body: JSON.stringify(contatoNovo)
+    }).then(resposta => {
+        if (resposta.status != 201 && resposta.status != 201) {
+            alert('Erro ao cadastrar')
+            return
+        }
+        alert('Cadastrado com sucesso!')
+        form.target.reset()
+        atualizarContatos()
     })
-        .then(resposta => {
-            if (resposta.status != 201) {
-                alert('Erro ao cadastrar')
-                return
-            }
-            alert('Cadastrado com sucesso!')
-            atualizarContatos()
-        })
 }
 
-function deletarContato() {
-    fetch('http://localhost:3000/contatos', {
+function deletarContato(id) {
+    fetch(`http://localhost:3000/contatos/${id}`, {
         method: 'DELETE'
+    }).then(resposta => {
+        if (resposta.status != 200) {
+            alert('Erro ao excluir')
+            return
+        }
+        alert('Contato excluído com sucesso!')
+        atualizarContatos()
     })
-        .then(resposta => {
-            if (resposta.status != 200) {
-                alert('Erro ao excluir')
-            }
-            atualizarContatos()
-        })
 }
