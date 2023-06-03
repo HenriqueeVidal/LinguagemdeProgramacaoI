@@ -45,7 +45,6 @@ function cadastrarContato(form) {
         email: form.target.email.value,
         telefone: form.target.telefone.value,
     }
-    console.log(contatoNovo)
     fetch('http://localhost:3000/contatos', {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
@@ -62,14 +61,18 @@ function cadastrarContato(form) {
 }
 
 function deletarContato(id) {
-    fetch(`http://localhost:3000/contatos/${id}`, {
-        method: 'DELETE'
-    }).then(resposta => {
-        if (resposta.status != 200) {
-            alert('Erro ao excluir')
-            return
-        }
-        alert('Contato excluído com sucesso!')
-        atualizarContatos()
-    })
+    if (confirm("Tem certeza que deseja excluir?")) {
+        fetch(`http://localhost:3000/contatos/${id}`, {
+            method: 'DELETE'
+        }).then(resposta => {
+            if (resposta.status != 200) {
+                alert('Erro ao excluir')
+                return
+            }
+            alert('Contato excluído com sucesso!')
+            atualizarContatos()
+        })
+    } else {
+        alert("Exclusão cancelada!")
+    }
 }
